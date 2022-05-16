@@ -4,6 +4,7 @@
 // You will notice when we use this module that app is given as a variable
 // The technical term for this is currying
 const jsonfile = require("jsonfile");
+const file_path = "./DB/user.json";
 module.exports = (app) => {
   // Route is accessible as GET: /demo
   // req is the parameter that refers to the request data
@@ -17,6 +18,20 @@ module.exports = (app) => {
     jsonfile.readFile("./DB/user.json", function (err, content) {
       // send file contents back to sender
       res.send(content);
+    });
+  });
+
+  app.post("/users/new", (req, res) => {
+    // console.log(req.body);
+    let { email, username } = req.body;
+
+    jsonfile.readFile(file_path, function (err, content) {
+      content.push({ email, username });
+      console.log("added " + email + " to DB");
+      jsonfile.writeFile(file_path, content, function (err) {
+        console.log(err);
+      });
+      res.sendStatus(200);
     });
   });
 };
