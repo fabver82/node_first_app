@@ -3,7 +3,7 @@
 // Because this file is seperate from the index.js we export it as a module
 // You will notice when we use this module that app is given as a variable
 // The technical term for this is currying
-
+const jsonfile = require("jsonfile");
 module.exports = (app) => {
   // Route is accessible as GET: /demo
   // req is the parameter that refers to the request data
@@ -11,14 +11,12 @@ module.exports = (app) => {
   //
 
   app.get("/users", (req, res) => {
-    // Some dummy data
-    //
-    let users;
+    console.log("fetching all users");
 
-    // res.send(data) or res.sendStatus(statusCode)
-    // To send a status message or data back to the requester
-    //
-    res.send(users);
-    //   res.send(demo);
+    // jsonfile reading
+    jsonfile.readFile("./DB/user.json", function (err, content) {
+      // send file contents back to sender
+      res.send(content);
+    });
   });
 };
